@@ -1,0 +1,35 @@
+[project]
+name = "main-app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Ezat Hanafi", email = "ezathanafi7@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "argon2-cffi>=25.1.0",
+    "cryptography>=50.0.1",
+    "django>=5.2,<6.0",
+    "django-environ>=0.14.0",
+    "django-ninja>=1.7.1",
+    "email-validator>=2.3.0",
+    "psycopg[binary]>=3.3.6",
+    "pyjwt>=2.15.0",
+]
+
+[project.scripts]
+main-app = "main_app:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "factory-boy>=3.3.3",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-django>=4.14.0",
+    "ruff>=0.16.9",
+]
