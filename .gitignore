@@ -1,0 +1,23 @@
+# ===== Secrets: never commit these =====
+.env
+*.pem
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ===== Django =====
+db.sqlite3
+staticfiles/
+media/
+
+# ===== Editor / OS =====
+.vscode/
+.DS_Store
+Thumbs.db
