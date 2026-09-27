@@ -27,6 +27,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
+API_DOCS_ENABLED = env.bool("API_DOCS_ENABLED", default=False)
 
 # ---------------------------------------------------------------------------
 # Applications
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.accounts",
+    "apps.core",
 ]
 
 MIDDLEWARE = [

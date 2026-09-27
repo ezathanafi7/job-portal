@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from .api import api
+
+admin.site.site_header = "Job Portal administration"
+admin.site.site_title = "Job Portal admin"
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("api/v1/", api.urls),
+    path("admin/", admin.site.urls),
 ]

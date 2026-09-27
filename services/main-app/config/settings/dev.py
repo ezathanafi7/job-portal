@@ -9,3 +9,4 @@ DEBUG = env.bool("DJANGO_DEBUG", default=True)
 SECRET_KEY = SECRET_KEY or "dev-only-insecure-key-never-use-in-production"
 
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+API_DOCS_ENABLED = env.bool("API_DOCS_ENABLED", default=True)
