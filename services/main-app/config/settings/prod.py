@@ -3,7 +3,7 @@
 from django.core.exceptions import ImproperlyConfigured
 
 from .base import *  # noqa: F403
-from .base import DATABASES, SECRET_KEY, env
+from .base import DATABASES, JWT, SECRET_KEY, env
 
 DEBUG = False
 
@@ -12,6 +12,9 @@ DEBUG = False
 # ---------------------------------------------------------------------------
 if not SECRET_KEY or len(SECRET_KEY) < 50:
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set to a long random value.")
+
+if not JWT["PRIVATE_KEY"] or not JWT["PUBLIC_KEY"]:
+    raise ImproperlyConfigured("JWT_PRIVATE_KEY and JWT_PUBLIC_KEY must be set in production.")
 
 if "sqlite" in DATABASES["default"]["ENGINE"]:
     raise ImproperlyConfigured("DATABASE_URL must point to PostgreSQL in production.")

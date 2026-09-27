@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import environ
-
+from apps.accounts.jwt_tokens import normalize_pem
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -98,6 +98,20 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_USER_MODEL = "accounts.User"
+JWT = {
+    "PRIVATE_KEY": normalize_pem(env("JWT_PRIVATE_KEY", default="")),
+    "PUBLIC_KEY": normalize_pem(env("JWT_PUBLIC_KEY", default="")),
+    "ISSUER": "job-portal-main",
+    "AUDIENCE": "job-portal",
+    "ACCESS_TTL_MINUTES": env.int("JWT_ACCESS_TTL_MINUTES", default=15),
+    "REFRESH_TTL_DAYS": env.int("JWT_REFRESH_TTL_DAYS", default=7),
+}
+REFRESH_COOKIE = {
+    "NAME": "refresh_token",
+    "PATH": "/api/v1/auth",
+    "SECURE": env.bool("AUTH_COOKIE_SECURE", default=True),
+    "SAMESITE": "Strict",
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

@@ -87,3 +87,30 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_portal_admin(self) -> bool:
         return self.role == Role.ADMIN
+
+class RefreshSession(models.Model):
+    """One row for every refresh token we issue (one per login / device).
+
+    Lets us:
+      * log a user out (mark the row revoked),
+      * replace the token every time it's used ("rotation"),
+      * detect a stolen token being used a second time.
+    """
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="refresh_sessions")
+    jti = models.CharField(max_length=64, unique=True)  # matches the token's "jti" claim
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    revoked_at = models.DateTimeField(null=True, blank=True)  # set on logout / rotation
+    user_agent = models.CharField(max_length=255, blank=True)  # which browser/device
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["user", "revoked_at"], name="refresh_user_revoked_idx")]
+
+    def __str__(self) -> str:
+        return f"{self.user_id}:{self.jti}"
+
+    @property
+    def is_active(self) -> bool:
+        return self.revoked_at is None and self.expires_at > timezone.now()

@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import BaseUserCreationForm
 from django.contrib.auth.forms import UserChangeForm as BaseUserChangeForm
 
-from .models import User
+from .models import User, RefreshSession
 
 
 class UserCreationForm(BaseUserCreationForm):
@@ -58,3 +58,13 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+
+@admin.register(RefreshSession)
+class RefreshSessionAdmin(admin.ModelAdmin):
+    list_display = ("user", "created_at", "expires_at", "revoked_at", "ip_address")
+    list_filter = ("revoked_at",)
+    search_fields = ("user__email",)
+    readonly_fields = [f.name for f in RefreshSession._meta.fields]
+
+    def has_add_permission(self, request):  # sessions are only created by logging in
+        return False
